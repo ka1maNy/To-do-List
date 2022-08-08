@@ -31,7 +31,7 @@ const App = () => {
       </Typography>
       <TodoForm saveTodo={todoText => {
                   const trimmedText = todoText.trim();
-                  if (trimmedText.length > 0) {setTodos(...todos, trimmedText)}
+                  if (trimmedText.length > 0) {setTodos([...todos, trimmedText])}
       }} />
       <TodoList todos = {todos}/>
     </div>
