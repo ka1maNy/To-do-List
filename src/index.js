@@ -1,38 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Typography from '@material-ui/core/Typography';
 import './index.css';
-import TodoForm from './TodoForm';
-import TodoList from './TodoList';
-import useTodoState from './useTodoState';
+import { BrowserRouter } from 'react-router-dom';
+import MyAppBar from './AppBar';
+import { Routes, Route } from 'react-router-dom'
+import SignPage from './SignPage';
+import MainPage from './MainPage';
 
 const App = () => {
-  const {todos, addTodo, deleteTodo} = useTodoState([]);
-  
   return (
-    <div className="App">
-
-      <Typography component="h1" variant="h2">
-                  Список Задач
-      </Typography>
-      
-      <TodoForm saveTodo={todoText => {
-                const trimmedText = todoText.trim();
-                if (trimmedText.length > 0) 
-                {addTodo(trimmedText)}
-      }} />
-
-      <TodoList todos = {todos}
-                deleteTodo={deleteTodo}/>
-    
-    </div>
+    <>
+      <div className="App">
+        <MyAppBar />
+      </div>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="log" element={<SignPage />} />
+      </Routes>
+    </>
   );
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );
 //const rootElement = document.getElementById('root');
