@@ -4,7 +4,8 @@ import CreateIcon from '@mui/icons-material/Create';
 import Stack from '@mui/material/Stack';
 import { Typography } from "@mui/material";
 import TextField from '@material-ui/core/TextField';
-import "./index.css"
+import "./index.css";
+import axios from 'axios';
 
 export default function Reg() {
     let submitFName = '';
