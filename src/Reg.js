@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import CreateIcon from '@mui/icons-material/Create';
 import Stack from '@mui/material/Stack';
@@ -7,6 +7,24 @@ import TextField from '@material-ui/core/TextField';
 import "./index.css"
 
 export default function Reg() {
+    let submitFName = '';
+    let submitLName = '';
+    let submitEmail = '';
+    let submitPass = '';
+    const [FName, setFName] = useState();
+    const [LName, setLName] = useState();
+    const [Email, setEmail] = useState();
+    const [Pass, setPass] = useState();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (FName && LName && Email && Pass) {
+            submitFName = FName;
+            submitLName = LName;
+            submitEmail = Email;
+            submitPass = Pass;
+        }
+    }
+
     return (
 
         <Stack direction="column" spacing={0} alignItems="center">
@@ -20,27 +38,35 @@ export default function Reg() {
                         <Stack direction="column" spacing={1}>
                             <TextField
                                 variant="outlined"
-                                placeholder="First Name *"
+                                label="First Name"
                                 margin="normal"
+                                required
+                                onChange={(e) => setFName(e.target.value)}
                             />
                             <TextField
                                 variant="outlined"
-                                placeholder="Last Name *"
+                                label="Last Name"
                                 margin="normal"
+                                required
+                                onChange={(e) => setLName(e.target.value)}
                             />
                             <TextField
                                 variant="outlined"
-                                placeholder="Email Address *"
+                                label="Email Address"
                                 margin="normal"
+                                required
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                             <TextField
                                 variant="outlined"
-                                placeholder="Password *"
+                                label="Password"
                                 margin="normal"
+                                required
+                                onChange={(e) => setPass(e.target.value)}
                             />
                         </Stack>
                     </div>
-                    <Button variant="contained" >
+                    <Button variant="contained" onClick={handleSubmit} >
                         Register
                     </Button>
                 </Stack>
