@@ -6,7 +6,6 @@ import { Typography } from "@mui/material";
 import TextField from '@material-ui/core/TextField';
 import "../../index.css";
 import axios from 'axios';
-import MyAppBar from './../../AppBar';
 
 let currentuserEmail = '';
 
@@ -23,14 +22,17 @@ function Login() {
             submitPass = Pass;
             currentuserEmail = submitEmail;
             axios
-            .post(`https://api-nodejs-todolist.herokuapp.com/user/login`, {
-               "email": submitEmail,
-               "password": submitPass, 
-            })
-            .then((response) => {
-                localStorage.setItem(currentuserEmail, response.data.token);
-                MyAppBar.loginStatus = 'Logged In';
-            })
+                .post(`https://api-nodejs-todolist.herokuapp.com/user/login`, {
+                    "email": submitEmail,
+                    "password": submitPass,
+                })
+                .then((response) => {
+                    localStorage.setItem(currentuserEmail, response.data.token);
+                    alert(`Welcome back, ` + response.data.user.name + '!');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     }
 

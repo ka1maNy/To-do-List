@@ -8,18 +8,16 @@ import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom'
 import LoginIcon from '@mui/icons-material/Login';
 import IconButton from '@mui/material/IconButton';
-import { Typography } from "@mui/material";
 
 const MyAppBar = () => {
-    let loginStatus = 'Logged Out';
+    //let loginStatus = 'Logged Out';
     return (
         <>
             <form>
                 <Box >
                     <AppBar position="static">
                         <Toolbar>
-                            <Stack direction="row" spacing={2}>
-                                <Stack direction="row" spacing={72}>
+                                <Stack direction="row" spacing={85}>
                                     <Link to="/">
                                         <IconButton color="default" size="large" edge="start" >
                                             <HomeIcon />
@@ -31,8 +29,6 @@ const MyAppBar = () => {
                                         </IconButton>
                                     </Link>
                                 </Stack>
-                                <Typography className="appbar">{loginStatus}</Typography>
-                            </Stack>
                         </Toolbar>
                     </AppBar>
                 </Box>
@@ -44,3 +40,4 @@ const MyAppBar = () => {
 export default MyAppBar;
 
 //sx={{ flexGrow: 1 }}
+//<Typography className="appbar">{loginStatus}</Typography>
