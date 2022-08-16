@@ -1,56 +1,50 @@
 import React, { useState } from "react";
 import Button from '@mui/material/Button';
-import CreateIcon from '@mui/icons-material/Create';
+import LoginIcon from '@mui/icons-material/Login';
 import Stack from '@mui/material/Stack';
 import { Typography } from "@mui/material";
 import TextField from '@material-ui/core/TextField';
-import "./index.css";
+import "../../index.css";
 import axios from 'axios';
+import MyAppBar from './../../AppBar';
 
-export default function Reg() {
-    let submitFName = '';
-    let submitLName = '';
-    let submitEmail = '';
-    let submitPass = '';
-    const [FName, setFName] = useState();
-    const [LName, setLName] = useState();
+let currentuserEmail = '';
+
+function Login() {
+    let submitEmail;
+    let submitPass;
     const [Email, setEmail] = useState();
     const [Pass, setPass] = useState();
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (FName && LName && Email && Pass) {
-            submitFName = FName;
-            submitLName = LName;
+        if (Email && Pass) {
             submitEmail = Email;
             submitPass = Pass;
+            currentuserEmail = submitEmail;
+            axios
+            .post(`https://api-nodejs-todolist.herokuapp.com/user/login`, {
+               "email": submitEmail,
+               "password": submitPass, 
+            })
+            .then((response) => {
+                localStorage.setItem(currentuserEmail, response.data.token);
+                MyAppBar.loginStatus = 'Logged In';
+            })
         }
     }
 
     return (
 
-        <Stack direction="column" spacing={0} alignItems="center">
-            <CreateIcon />
+        <Stack direction="column" spacing={1} alignItems="center">
+            <LoginIcon />
             <Typography>
-                Register
+                Log in
             </Typography>
             <form>
                 <Stack direction="column" spacing={2} width="400px">
                     <div>
                         <Stack direction="column" spacing={1}>
-                            <TextField
-                                variant="outlined"
-                                label="First Name"
-                                margin="normal"
-                                required
-                                onChange={(e) => setFName(e.target.value)}
-                            />
-                            <TextField
-                                variant="outlined"
-                                label="Last Name"
-                                margin="normal"
-                                required
-                                onChange={(e) => setLName(e.target.value)}
-                            />
                             <TextField
                                 variant="outlined"
                                 label="Email Address"
@@ -67,12 +61,17 @@ export default function Reg() {
                             />
                         </Stack>
                     </div>
-                    <Button variant="contained" onClick={handleSubmit} >
-                        Register
+                    <Button variant="contained" onClick={handleSubmit}>
+                        Log in
                     </Button>
                 </Stack>
             </form>
         </Stack>
-    )
 
-}
+    );
+};
+
+
+export default Login;
+
+//${process.env.REACT_APP_BASEURL}
