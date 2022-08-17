@@ -7,8 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import "../../index.css";
 import axios from 'axios';
 
-let currentuserEmail = '';
-
 export default function Reg() {
     let submitFName = '';
     let submitLName = '';
@@ -25,7 +23,6 @@ export default function Reg() {
             submitLName = LName;
             submitEmail = Email;
             submitPass = Pass;
-            currentuserEmail = submitEmail;
             axios
                 .post(`https://api-nodejs-todolist.herokuapp.com/user/register`, {
                     "name": submitFName,
@@ -33,7 +30,8 @@ export default function Reg() {
                     "password": submitPass,
                 })
                 .then((response) => {
-                    localStorage.setItem(currentuserEmail, response.data.token)
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('userEmail',  submitEmail);
                     alert(`Hello, ` + response.data.user.name + '. Registration successful!');
                 })
                 .catch((error) => {

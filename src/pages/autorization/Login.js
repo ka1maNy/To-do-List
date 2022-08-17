@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import "../../index.css";
 import axios from 'axios';
 
-let currentuserEmail = '';
 
 function Login() {
     let submitEmail;
@@ -20,14 +19,14 @@ function Login() {
         if (Email && Pass) {
             submitEmail = Email;
             submitPass = Pass;
-            currentuserEmail = submitEmail;
             axios
                 .post(`https://api-nodejs-todolist.herokuapp.com/user/login`, {
                     "email": submitEmail,
                     "password": submitPass,
                 })
                 .then((response) => {
-                    localStorage.setItem(currentuserEmail, response.data.token);
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('userEmail', submitEmail);
                     alert(`Welcome back, ` + response.data.user.name + '!');
                 })
                 .catch((error) => {
