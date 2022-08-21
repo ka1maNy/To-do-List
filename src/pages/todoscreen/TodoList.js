@@ -7,7 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { taskId } from './MainPage';
-import axios from 'axios';
+import RequestDeletetodo from '../../requests/requestDeletetodo';
 
 const TodoList = ({ todos, deleteTodo }) => (
   <List>
@@ -20,22 +20,8 @@ const TodoList = ({ todos, deleteTodo }) => (
             aria-label="Delete"
             onClick={() => {
               deleteTodo(index);
-              let currentTask = taskId.get(todo)
-              axios
-                .delete(`https://api-nodejs-todolist.herokuapp.com/task/${currentTask}`,
-                  {
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    }
-                  })
-                .then((response) => {
-                  if (response.data.success === true) {
-                    taskId.delete(todo);
-                  }
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
+              let currentTask = taskId.get(todo);
+              RequestDeletetodo(todo, currentTask);
             }}
           >
             <DeleteIcon />

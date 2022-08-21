@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { taskId, responseTodos } from '../pages/todoscreen/MainPage';
 
-function RequestImport() {
+async function RequestImport() {
 
-    axios
-        .get('https://api-nodejs-todolist.herokuapp.com/task',
+    await axios
+        .get(`${process.env.REACT_APP_BASEURL}task`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -20,7 +20,6 @@ function RequestImport() {
                 for (let i = 0; i < responseTodos.length; i++) {
                     taskId.set(responseTodos[i], response.data.data[i]._id)
                 }
-                console.log(responseTodos)
             }
             else alert('Your ToDo list is empty');
         })

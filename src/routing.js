@@ -5,8 +5,8 @@ import MainPage from './pages/todoscreen/MainPage';
 const Routing = () => {
     return (
         <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="log" element={<SignPage />} />
+            <Route path="todo" element={<MainPage />} />
+            <Route path="/" element={<SignPage />} />
         </Routes>
     )
 }

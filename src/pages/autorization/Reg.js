@@ -1,43 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from '@mui/material/Button';
 import CreateIcon from '@mui/icons-material/Create';
 import Stack from '@mui/material/Stack';
 import { Typography } from "@mui/material";
 import TextField from '@material-ui/core/TextField';
 import "../../index.css";
-import axios from 'axios';
+import RequestReg from './../../requests/requestReg';
+import { useNavigate } from "react-router-dom";
+import { loginStatus } from './../../AppBar';
+import { useForm } from 'react-hook-form';
 
 export default function Reg() {
-    let submitFName = '';
-    let submitLName = '';
-    let submitEmail = '';
-    let submitPass = '';
-    const [FName, setFName] = useState();
-    const [LName, setLName] = useState();
-    const [Email, setEmail] = useState();
-    const [Pass, setPass] = useState();
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (FName && LName && Email && Pass) {
-            submitFName = FName;
-            submitLName = LName;
-            submitEmail = Email;
-            submitPass = Pass;
-            axios
-                .post(`https://api-nodejs-todolist.herokuapp.com/user/register`, {
-                    "name": submitFName,
-                    "email": submitEmail,
-                    "password": submitPass,
-                })
-                .then((response) => {
-                    localStorage.setItem('token', response.data.token);
-                    localStorage.setItem('userEmail',  submitEmail);
-                    alert(`Hello, ` + response.data.user.name + '. Registration successful!');
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
+
+    const navigateTo = useNavigate();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm()
+
+    const onSubmit = (data) => {
+        RequestReg(data.name, data.email, data.pass);
+        loginStatus.set('logged', true);
+        navigateTo("todo");
     }
 
     return (
@@ -47,41 +33,51 @@ export default function Reg() {
             <Typography>
                 Register
             </Typography>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <Stack direction="column" spacing={2} width="400px">
                     <div>
                         <Stack direction="column" spacing={1}>
-                            <TextField
+                                <TextField
                                 variant="outlined"
-                                label="First Name"
+                                label="Name"
                                 margin="normal"
-                                required
-                                onChange={(e) => setFName(e.target.value)}
-                            />
-                            <TextField
-                                variant="outlined"
-                                label="Last Name"
-                                margin="normal"
-                                required
-                                onChange={(e) => setLName(e.target.value)}
+                                {...register("name", {
+                                    required: "Required",
+                                })}
+                                error={!!errors?.name}
+                                helperText={errors?.name ? errors.name.message : null}
                             />
                             <TextField
                                 variant="outlined"
                                 label="Email Address"
                                 margin="normal"
-                                required
-                                onChange={(e) => setEmail(e.target.value)}
+                                {...register("email", {
+                                    required: "Required",
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: "Invalid email address",
+                                    },
+                                })}
+                                error={!!errors?.email}
+                                helperText={errors?.email ? errors.email.message : null}
                             />
                             <TextField
                                 variant="outlined"
                                 label="Password"
                                 margin="normal"
-                                required
-                                onChange={(e) => setPass(e.target.value)}
+                                {...register("pass", {
+                                    required: "Required",
+                                    minLength: {
+                                        value: 8,
+                                        message: 'Minimal length - 8'
+                                    }
+                                })}
+                                error={!!errors?.pass}
+                                helperText={errors?.pass ? errors.pass.message : null}
                             />
                         </Stack>
                     </div>
-                    <Button variant="contained" onClick={handleSubmit} >
+                    <Button type="submit" variant="contained" >
                         Register
                     </Button>
                 </Stack>
