@@ -5,14 +5,16 @@ import Stack from '@mui/material/Stack';
 import { Typography } from "@mui/material";
 import TextField from '@material-ui/core/TextField';
 import "../../index.css";
-import RequestReg from './../../requests/requestReg';
 import { useNavigate } from "react-router-dom";
-import { loginStatus } from './../../AppBar';
+import { useDispatch } from 'react-redux';
+import { regUser } from '../../store/actions';
 import { useForm } from 'react-hook-form';
 
 export default function Reg() {
 
     const navigateTo = useNavigate();
+
+    const dispatch = useDispatch();
 
     const {
         register,
@@ -21,8 +23,7 @@ export default function Reg() {
     } = useForm()
 
     const onSubmit = (data) => {
-        RequestReg(data.name, data.email, data.pass);
-        loginStatus.set('logged', true);
+        dispatch(regUser(data.email, data.pass, data.name));
         navigateTo("todo");
     }
 
@@ -37,7 +38,7 @@ export default function Reg() {
                 <Stack direction="column" spacing={2} width="400px">
                     <div>
                         <Stack direction="column" spacing={1}>
-                                <TextField
+                            <TextField
                                 variant="outlined"
                                 label="Name"
                                 margin="normal"

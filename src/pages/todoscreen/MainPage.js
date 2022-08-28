@@ -1,58 +1,31 @@
 import React, { useEffect } from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
-import useTodoState from './useTodoState';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@mui/material/IconButton';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import Stack from '@mui/material/Stack';
-import RequestSavetodo from '../../requests/requestSavetodo';
-import axios from 'axios';
-import { loginStatus } from '../../AppBar';
 import { useNavigate } from "react-router-dom";
-
-
-export let taskId = new Map();
-export let responseTodos = [];
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux/es/exports';
+import { addTodos } from '../../store/actions';
+import { importTodos } from '../../store/actions';
 
 const MainPage = () => {
+
+  const dispatch = useDispatch();
+  const todosList = useSelector(state => state.todo.todos);
 
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    if (loginStatus.get('logged') === false) {
+    if (localStorage.getItem('loginStatus') === false) {
       navigateTo("/");
     }
     else {
-      axios
-        .get(`${process.env.REACT_APP_BASEURL}task`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            }
-          },
-        )
-        .then((response) => {
-          if (response.data.count !== 0) {
-            for (let i = 0; i < response.data.count; i++) {
-              responseTodos[i] = response.data.data[i].description
-            }
-            importTodo(responseTodos);
-            console.log(responseTodos)
-            taskId.clear();
-            for (let i = 0; i < responseTodos.length; i++) {
-              taskId.set(responseTodos[i], response.data.data[i]._id)
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          alert('Your ToDo list is empty');
-        });
+      dispatch(importTodos())
     }
   }, [])
-
-  const { todos, addTodo, deleteTodo, importTodo } = useTodoState([]);
 
   return (
     <div className='wrapper'>
@@ -70,18 +43,16 @@ const MainPage = () => {
       </Stack>
       <TodoForm saveTodo={
         todoText => {
-          if (loginStatus.get('logged') === true) {
+          if (localStorage.getItem('loginStatus') === true) {
             const trimmedText = todoText.trim();
             if (trimmedText.length > 0) {
-              addTodo(trimmedText);
-              RequestSavetodo(trimmedText);
+              dispatch(addTodos(trimmedText));
             }
           }
           else alert('You need to Login or Register')
         }} />
 
-      <TodoList todos={todos}
-        deleteTodo={deleteTodo} />
+      <TodoList todos={todosList} />
     </div>
   )
 }

@@ -62,6 +62,3 @@ const MyAppBar = () => {
 }
 
 export default MyAppBar;
-
-//sx={{ flexGrow: 1 }}
-//<Typography className="appbar">{loginStatus}</Typography>

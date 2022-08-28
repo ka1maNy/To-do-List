@@ -1,7 +1,6 @@
 import axios from "axios";
-import { loginStatus } from "../AppBar";
 
-export default function RequestLogout(submitEmail, submitPass) {
+export default function RequestLogout() {
     axios
         .post(`${process.env.REACT_APP_BASEURL}user/logout`, {}, {
             headers: {
@@ -10,9 +9,9 @@ export default function RequestLogout(submitEmail, submitPass) {
         })
         .then((response) => {
             if (response.data.success === true) {
-                loginStatus.set('logged', false);
                 localStorage.setItem('token', '');
                 localStorage.setItem('userEmail', '');
+                localStorage.setItem('loginStatus', false);
                 alert('You logged out');
             }
         })

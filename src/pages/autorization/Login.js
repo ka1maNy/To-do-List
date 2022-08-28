@@ -4,12 +4,14 @@ import Stack from '@mui/material/Stack';
 import { Typography } from "@mui/material";
 import TextField from '@material-ui/core/TextField';
 import "../../index.css";
-import RequestLogin from "../../requests/requestLogin";
 import { useNavigate } from "react-router-dom";
-import { loginStatus } from './../../AppBar';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { logUser } from '../../store/actions';
 
 function Login() {
+
+    const dispatch = useDispatch();
 
     const {
         register,
@@ -20,12 +22,12 @@ function Login() {
     const navigateTo = useNavigate();
 
     const onSubmit = async (data) => {
-        await RequestLogin(data.email, data.pass);
-        if (loginStatus.get('can login') === true) {
-            loginStatus.set('logged', true);
+        dispatch(logUser(data.email, data.pass));
+        if (localStorage.getItem('loginStatus') === true) {
             navigateTo("todo");
         }
         else alert('wrong password');
+        navigateTo("todo");
     }
 
     return (

@@ -1,9 +1,13 @@
 import axios from "axios";
-import { taskId } from './../pages/todoscreen/MainPage';
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { deleteTodosID } from "../store/actions";
 
-export default function RequestDeletetodo(todo, todoId) {
+export default function RequestDeletetodo(todoText) {
+    const deleteID = useSelector(state => state.todo.id.get(todoText));
+    const dispatch = useDispatch();
     axios
-        .delete(`${process.env.REACT_APP_BASEURL}task/${todoId}`,
+        .delete(`${process.env.REACT_APP_BASEURL}task/${deleteID}`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -11,7 +15,7 @@ export default function RequestDeletetodo(todo, todoId) {
             })
         .then((response) => {
             if (response.data.success === true) {
-                taskId.delete(todo);
+                dispatch(deleteTodosID(todoText))
             }
         })
         .catch((error) => {

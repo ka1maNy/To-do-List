@@ -10,6 +10,7 @@ export default function RequestReg(submitFName, submitEmail, submitPass) {
         .then((response) => {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userEmail', submitEmail);
+            localStorage.setItem('loginStatus', true);
             alert(`Hello, ` + response.data.user.name + '. Registration successful!');
         })
         .catch((error) => {

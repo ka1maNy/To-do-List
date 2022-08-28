@@ -6,30 +6,31 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { taskId } from './MainPage';
-import RequestDeletetodo from '../../requests/requestDeletetodo';
+import { useDispatch } from 'react-redux';
+import { deleteTodos } from '../../store/actions';
 
-const TodoList = ({ todos, deleteTodo }) => (
-  <List>
-    {todos.map((todo, index) => (
-      <ListItem key={index.toString()} dense button>
-        <Checkbox tabIndex={-1} disableRipple />
-        <ListItemText primary={todo} />
-        <ListItemSecondaryAction>
-          <IconButton
-            aria-label="Delete"
-            onClick={() => {
-              deleteTodo(index);
-              let currentTask = taskId.get(todo);
-              RequestDeletetodo(todo, currentTask);
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-    ))}
-  </List>
-);
+const TodoList = ({ todos}) => {
+  const dispatch = useDispatch();
+  return (
+    <List>
+      {todos.map((todo, index) => (
+        <ListItem key={index.toString()} dense button>
+          <Checkbox tabIndex={-1} disableRipple />
+          <ListItemText primary={todo} />
+          <ListItemSecondaryAction>
+            <IconButton
+              aria-label="Delete"
+              onClick={() => {
+                dispatch(deleteTodos(todo));
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      ))}
+    </List>
+  )
+};
 
 export default TodoList;
