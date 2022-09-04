@@ -19,6 +19,7 @@ export default function userReducer(state = initialState, action) {
                 ...state,
                 mail: null,
                 pass: null,
+                name: null,
             }
         case REG_USER:
             return {

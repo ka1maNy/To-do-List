@@ -7,7 +7,7 @@ import "../../index.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { logUser } from '../../store/actions';
+import { RequestLogin } from './../../requests/requestLogin';
 
 function Login() {
 
@@ -22,12 +22,11 @@ function Login() {
     const navigateTo = useNavigate();
 
     const onSubmit = async (data) => {
-        dispatch(logUser(data.email, data.pass));
-        if (localStorage.getItem('loginStatus') === true) {
+        await dispatch(RequestLogin(data.email, data.pass));
+        if (localStorage.getItem('loginStatus') === 'logged') {
             navigateTo("todo");
         }
         else alert('wrong password');
-        navigateTo("todo");
     }
 
     return (

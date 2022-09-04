@@ -1,11 +1,9 @@
 import axios from "axios";
-//import { taskId } from './../pages/todoscreen/MainPage';
-import { useDispatch } from "react-redux";
-import { addTodosID } from "../store/actions";
+import { addTodos, addTodosID } from "../store/actions";
 
 export default function RequestSavetodo(trimmedText) {
-    const dispatch = useDispatch();
-    axios
+    return async function(dispatch) {
+    const response = await axios
         .post(`${process.env.REACT_APP_BASEURL}task`, {
             "description": trimmedText,
         },
@@ -15,13 +13,12 @@ export default function RequestSavetodo(trimmedText) {
                 }
             },
         )
-        .then((response) => {
-            if (response.data.success === true) {
-                dispatch(addTodosID(trimmedText, response.data.data._id))
-                //taskId.set(trimmedText, response.data.data._id);
-            }
-        })
         .catch((error) => {
             console.log(error);
         });
-}
+        if (response.data.success === true) {
+            dispatch(addTodos(trimmedText))
+            dispatch(addTodosID(response.data.data._id))
+            //taskId.set(trimmedText, response.data.data._id);
+        }
+}}

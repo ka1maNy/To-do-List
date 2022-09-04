@@ -7,8 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import "../../index.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { regUser } from '../../store/actions';
 import { useForm } from 'react-hook-form';
+import RequestReg from './../../requests/requestReg';
 
 export default function Reg() {
 
@@ -23,7 +23,7 @@ export default function Reg() {
     } = useForm()
 
     const onSubmit = (data) => {
-        dispatch(regUser(data.email, data.pass, data.name));
+        dispatch(RequestReg(data.name, data.email, data.pass));
         navigateTo("todo");
     }
 

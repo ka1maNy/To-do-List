@@ -8,8 +8,8 @@ import Stack from '@mui/material/Stack';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux/es/exports';
-import { addTodos } from '../../store/actions';
-import { importTodos } from '../../store/actions';
+import { RequestImport } from './../../requests/requestImport';
+import RequestSavetodo from './../../requests/requestSavetodo';
 
 const MainPage = () => {
 
@@ -19,11 +19,11 @@ const MainPage = () => {
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem('loginStatus') === false) {
+    if (localStorage.getItem('loginStatus') !== 'logged') {
       navigateTo("/");
     }
     else {
-      dispatch(importTodos())
+      dispatch(RequestImport())
     }
   }, [])
 
@@ -43,10 +43,10 @@ const MainPage = () => {
       </Stack>
       <TodoForm saveTodo={
         todoText => {
-          if (localStorage.getItem('loginStatus') === true) {
+          if (localStorage.getItem('loginStatus') === 'logged') {
             const trimmedText = todoText.trim();
             if (trimmedText.length > 0) {
-              dispatch(addTodos(trimmedText));
+              dispatch(RequestSavetodo(trimmedText));
             }
           }
           else alert('You need to Login or Register')

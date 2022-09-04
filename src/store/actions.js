@@ -1,8 +1,3 @@
-import RequestSavetodo from './../requests/requestSavetodo';
-import RequestDeletetodo from '../requests/requestDeletetodo';
-import RequestImport from '../requests/requestImport';
-import RequestLogin from '../requests/requestLogin';
-import RequestLogout from '../requests/requestLogout';
 import RequestReg from '../requests/requestReg';
 
 export const DELETE_TODO = "DELETE_TODO"
@@ -13,33 +8,30 @@ export const IMPORT_TODOS = "IMPORT_TODOS"
 
 export const addTodos = (todoText) => {
     return (
-        RequestSavetodo(todoText),
         { type: ADD_TODO, payload: todoText }
     )
 }
 
 export const deleteTodos = (todoText) => {
     return (
-        RequestDeletetodo(todoText),
         { type: DELETE_TODO, payload: todoText }
     )
 }
 
-export const addTodosID = (todoText, todoID) => {
+export const addTodosID = (todoID) => {
     return (
-        { type: ADD_ID, payload: todoID, key: todoText }
+        { type: ADD_ID, payload: todoID }
     )
 }
 
-export const deleteTodosID = (todoText) => {
+export const deleteTodosID = (deleteID) => {
     return (
-        { type: ADD_ID, key: todoText }
+        { type: DELETE_ID, key: deleteID }
     )
 }
 
 export const importTodos = () => {
     return (
-        RequestImport(),
         { type: IMPORT_TODOS }
     )
 }
@@ -50,14 +42,12 @@ export const REG_USER = "REG_USER"
 
 export const logUser = (mail, pass) => {
     return (
-        RequestLogin(mail, pass),
         { type: LOGIN_USER, mail: mail, pass: pass }
     )
 }
 
 export const logoutUser = () => {
     return (
-        RequestLogout(),
         { type: LOGOUT_USER }
     )
 }

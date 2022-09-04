@@ -7,10 +7,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch } from 'react-redux';
-import { deleteTodos } from '../../store/actions';
+import RequestDeletetodo from './../../requests/requestDeletetodo';
+import { useSelector } from 'react-redux';
 
-const TodoList = ({ todos}) => {
+const TodoList = ({ todos }) => {
   const dispatch = useDispatch();
+  let todosID = useSelector(state => state.todo.todoID)
   return (
     <List>
       {todos.map((todo, index) => (
@@ -21,7 +23,8 @@ const TodoList = ({ todos}) => {
             <IconButton
               aria-label="Delete"
               onClick={() => {
-                dispatch(deleteTodos(todo));
+                const deleteID = todosID[todos.indexOf(todo)];
+                dispatch(RequestDeletetodo(todo, deleteID));
               }}
             >
               <DeleteIcon />

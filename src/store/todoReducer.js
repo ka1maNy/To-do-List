@@ -2,7 +2,7 @@ import { ADD_TODO, DELETE_TODO, ADD_ID, IMPORT_TODOS, DELETE_ID } from "./action
 
 const initialState = {
     todos: [],
-    id: new Map()
+    todoID: [],
 }
 
 export default function todoReducer(state = initialState, action) {
@@ -20,12 +20,12 @@ export default function todoReducer(state = initialState, action) {
         case ADD_ID:
             return {
                 ...state,
-                id: [...state.id.set(action.key, action.payload)]
+                todoID: [...state.todoID, action.payload]
             }
         case DELETE_ID:
             return {
                 ...state,
-                id: [...state.id.delete(action.key)]
+                todoID: [...state.todoID.filter((deleteID) => deleteID !== action.key)]
             }
         case IMPORT_TODOS:
             return {

@@ -9,18 +9,17 @@ import LoginIcon from '@mui/icons-material/Login';
 import IconButton from '@mui/material/IconButton';
 import { useNavigate } from "react-router-dom";
 import RequestLogout from './requests/requestLogout';
-
-export let loginStatus = new Map();
-loginStatus.set('logged', false);
-loginStatus.set('can login', true);
+import { useDispatch } from 'react-redux';
 
 const MyAppBar = () => {
 
     const navigateTo = useNavigate();
 
+    const dispatch = useDispatch();
+
     const handleSubmithome = (e) => {
         e.preventDefault();
-        if (loginStatus.get('logged') === true) {
+        if (localStorage.getItem('loginStatus') === 'logged') {
             navigateTo("todo");
         }
         else {
@@ -30,8 +29,8 @@ const MyAppBar = () => {
 
     const handleSubmitlog = (e) => {
         e.preventDefault();
-        if (loginStatus.get('logged') === true) {
-            RequestLogout();
+        if (localStorage.getItem('loginStatus') === 'logged') {
+            dispatch(RequestLogout());
             navigateTo("/");
         }
         else {
